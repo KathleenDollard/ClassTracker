@@ -1,11 +1,9 @@
-﻿using KadGen.ClassTracker.Repository;
-using KadGen.Common;
-using System;
+﻿using KadGen.Common;
 using System.Linq;
 
 namespace KadGen.ClassTracker.Repository.Specs
 {
-    public class InsideOutProgramming
+    public class OutsideInRefactoring
     {
         public int Foo(int x, int y)
         {

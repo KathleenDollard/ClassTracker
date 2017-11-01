@@ -26,7 +26,17 @@ namespace ClassTracker.Repository
                 var entity = dbSet
                                 .Where(x=>x.Id == id)
                                 .SingleOrDefault();
-                var domain = MapEntityToDomain(entity);
+                var domain = 
+                        entity == null
+                            ? null
+                            : new Organization(entity.Id, entity.Name,
+                                    org => entity.Terms.Select(x
+                                        => TermRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList(),
+                                    org => entity.Instructors.Select(x
+                                        => InstructorRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList(),
+                                    org => entity.Courses.Select(x
+                                        => CourseRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList());
+                            ;
                 var result = DataResult<Organization>.CreateSuccessResult(domain);
                 return result;
             }
@@ -36,25 +46,7 @@ namespace ClassTracker.Repository
             }
         }
 
-        // Similar for other methods
+        // And so on  for other methods
 
-        public static Organization MapEntityToDomain(EfOrganization entity)
-        {
-            return entity == null
-                ? null
-                : new Organization(entity.Id, entity.Name,
-                        org => entity.Terms.Select(x
-                            => TermRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList(),
-                        org => entity.Instructors.Select(x
-                            => InstructorRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList(),
-                        org => entity.Courses.Select(x
-                            => CourseRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList());
-        }
-
-        public static void MapDomainToEntity(Organization domain, EfOrganization entity)
-        {
-            entity.Id = domain.Id;
-            entity.Name = domain.Name;
-        }
     }
 }
