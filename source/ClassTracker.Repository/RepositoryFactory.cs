@@ -10,11 +10,11 @@ namespace KadGen.ClassTracker.Repository
 {
     public class RepositoryFactory : BaseFactory<BaseRepository>
     {
-        public RepositoryFactory()
+        public RepositoryFactory(ClassTrackerDbContext dbContext)
             : base(
             new Dictionary<Type, BaseRepository>
             {
-                [typeof(Organization)] = new OrganizationRepository()
+                [typeof(Organization)] = new OrganizationRepository(dbContext)
             })
         { }
     }

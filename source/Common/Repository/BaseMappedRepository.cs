@@ -13,7 +13,7 @@ namespace KadGen.Common.Repository
         private Expression<Func<TEntity, TPKey>> _getPKeyExpr { get; }
         protected Func<TEntity, TPKey> GetPKey { get; }
         protected Func<TEntity, TDomain> MapEntityToDomain { get; }
-        protected Func<TDomain, TEntity> MapDomainToEntity { get; }
+        protected Action<TDomain, TEntity> MapDomainToEntity { get; }
 
         protected abstract DataResult<TDomain> GetWhere(Expression<Func<TEntity, bool>> filter);
         protected abstract DataResult<IEnumerable<TDomain>> GetAllWhere(Expression<Func<TEntity, bool>> filter);
@@ -21,7 +21,7 @@ namespace KadGen.Common.Repository
         public BaseMappedRepository(
                  Expression<Func<TEntity, TPKey>> getPKeyExpression,
                  Func<TEntity, TDomain> mapEntityToDomain,
-                 Func<TDomain, TEntity> mapDomainToEntity)
+                 Action<TDomain, TEntity> mapDomainToEntity)
             : base(getPKeyExpression.MemberName())
         {
             MapEntityToDomain = mapEntityToDomain;

@@ -25,17 +25,15 @@ namespace KadGen.ClassTracker.Repository.Specs
         [TestMethod]
         public void TestDbContext()
         {
-            using (var dbContext = new ClassTrackerDbContext())
-            {
-                var x = dbContext.Organizations.Create();
-                dbContext.SaveChanges();
-            }
+            var dbContext = Utilities.GetDbContext();
+            var x = dbContext.Organizations.Create();
+            dbContext.SaveChanges();
         }
 
         [TestMethod]
         public void Get_organization()
         {
-            var repo = new OrganizationRepository();
+            var repo = new OrganizationRepository(Utilities.GetDbContext());
             const string orgName = "Fred's Bar and Grill";
             var id = GetOrgIdCreatingIfNeeded(repo, orgName);
             var organizationResult = repo.Get(id);
@@ -49,7 +47,7 @@ namespace KadGen.ClassTracker.Repository.Specs
         [TestMethod]
         public void Get_organization_via_async()
         {
-            var repo = new OrganizationRepository();
+            var repo = new OrganizationRepository(Utilities.GetDbContext());
             const string orgName = "Fred's Bar and Grill";
             var id = GetOrgIdCreatingIfNeededViaAsync(repo, orgName);
             var organizationResult = repo.Get(id);

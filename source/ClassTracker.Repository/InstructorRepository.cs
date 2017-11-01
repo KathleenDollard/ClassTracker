@@ -6,8 +6,9 @@ namespace KadGen.ClassTracker.Repository
     public class InstructorRepository
              : BaseEfRepository<Instructor, int, EfInstructor, ClassTrackerDbContext>
     {
-        public InstructorRepository()
+        public InstructorRepository(ClassTrackerDbContext dbContext)
             : base(
+                  dbContext,
                   getDbSet: dc => dc.Instructors,
                   getPKey: e => e.Id,
                   mapEntityToDomain: Mapper.MapEntityToDomain,
@@ -32,13 +33,11 @@ namespace KadGen.ClassTracker.Repository
                     entity.GivenName , entity.SurName);
             }
 
-            public static EfInstructor MapDomainToEntity(Instructor domain)
+            public static void MapDomainToEntity(Instructor domain, EfInstructor entity)
             {
-                var entity = new EfInstructor();
                 entity.Id = domain.Id;
                 entity.GivenName = domain.GivenName;
                 entity.SurName = domain.SurName;
-                return entity;
             }
         }
     }

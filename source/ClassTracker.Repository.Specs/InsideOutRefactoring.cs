@@ -11,10 +11,10 @@ namespace KadGen.ClassTracker.Repository.Specs
         {
             try
             {
-                using (var dbContext = new ClassTrackerDbContext())
+                using (var dbContext = new ClassTrackerDbContext(Utilities.GetConnSetting()))
                 {
                     // interesting code - use your imagination
-                    return dbContext.Courses.Count() + x + y; 
+                    return dbContext.Courses.Count() + x + y;
                 }
             }
             catch

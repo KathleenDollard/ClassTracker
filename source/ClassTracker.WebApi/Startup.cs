@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using KadGen.ClassTracker.Service;
+using KadGen.ClassTracker.Repository;
 
 namespace KadGen.ClassTracker.WebApi
 {
@@ -26,8 +27,16 @@ namespace KadGen.ClassTracker.WebApi
         {
             // Add framework services.
             services.AddMvc();
+            var connString = Configuration["Data:DefaultConnection:ClassTrackerConnectionString"];
+            var dbContext = new ClassTrackerDbContext(connString);
+            //services.AddScoped<ClassTrackerDbContext>
+            //    (serviceProvider => new ClassTrackerDbContext
+            //        (Configuration["Data:DefaultConnection:ClassTrackerConnectionString"]));
+            services.AddScoped(serviceProvider => new OrganizationService(dbContext));
 
-            services.AddScoped(typeof(OrganizationService));
+            //var connection = @"Server=.\\..\\Database\\mssqllocaldb;Database=ClassTracker;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+            //services.AddScoped<ClassTrackerDbContext>(_ => new ClassTrackerDbContext(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

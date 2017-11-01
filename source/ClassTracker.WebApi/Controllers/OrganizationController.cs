@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using KadGen.ClassTracker.Service;
 using KadGen.ClassTracker.WebApi.ViewModels;
+using System.Linq;
+using KadGen.Common;
 
 namespace KadGen.ClassTracker.WebApi.Controllers
 {
@@ -16,11 +18,11 @@ namespace KadGen.ClassTracker.WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<OrganizationViewModel> Get()
+        public DataResult<IEnumerable<OrganizationViewModel>> Get()
         {
-            // TODO: Mapping
-            return null;
-            //return _service.GetOrganizations();
+            var result = _service.GetAll();
+                return result.CreateWithMap(list=>list
+                    .Select(x=>new OrganizationViewModel(x)));
         }
 
         [HttpGet("{id}")]

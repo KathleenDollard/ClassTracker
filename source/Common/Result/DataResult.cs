@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace KadGen.Common
 {
     public class DataResult<TData> : Result
     {
+        
         internal DataResult(
                 TData data,
                 IEnumerable<Error> errors,
@@ -24,6 +26,13 @@ namespace KadGen.Common
         public static DataResult<TData> CreateSuccessResult(TData data)
         {
             return new DataResult<TData>(data, null, null);
+        }
+
+        public DataResult<TNewType> CreateWithMap<TNewType>(
+                Func<TData, TNewType> map)
+        {
+            return new DataResult<TNewType>(map(this.Data),
+                this.Errors, this.ValidationIssues);
         }
 
         public TData Data { get; }

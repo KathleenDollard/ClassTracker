@@ -21,7 +21,7 @@ namespace KadGen.ClassTracker.Repository.Specs
         [TestMethod]
         public void Can_retrieve_existing_organization()
         {
-            var service = new OrganizationService();
+            var service = new OrganizationService(Utilities.GetDbContext());
             const string orgName = "Fred's Bar and Grill";
             var id = GetOrgIdCreatingIfNeeded(service, orgName);
             var organizationResult = service.Get(id);
@@ -33,10 +33,11 @@ namespace KadGen.ClassTracker.Repository.Specs
         }
 
         [TestMethod]
+        [Ignore]
         public void Can_create_and_delete_organization()
         {
             // This is crappy testing because a failed test requires a manual database clean, it's a sample!
-            var service = new OrganizationService();
+            var service = new OrganizationService(Utilities.GetDbContext());
             const string orgName = "Joe's Fish Shack";
 
             var id = GetOrgIdCreatingIfNeeded(service, orgName);
@@ -62,7 +63,7 @@ namespace KadGen.ClassTracker.Repository.Specs
         public void Can_update_organization()
         {
             // This is crappy testing because a failed test requires a manual database clean, it's a sample!
-            var service = new OrganizationService();
+            var service = new OrganizationService(Utilities.GetDbContext());
             const string orgNameInitial = "Sam's Number 2 Diner";
             const string orgNameShouldBe = "Sam's Number 3 Diner";
 

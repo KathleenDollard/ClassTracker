@@ -9,8 +9,8 @@ namespace KadGen.ClassTracker.Service
     {
         private OrganizationRepository  _repository { get; }  
 
-        public OrganizationService()
-            :base(new RepositoryFactory())
+        public OrganizationService(ClassTrackerDbContext dbContext)
+            :base(new RepositoryFactory(dbContext))
         { }
     }
 }

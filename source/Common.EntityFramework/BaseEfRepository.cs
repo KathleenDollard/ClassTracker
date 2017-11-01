@@ -11,19 +11,23 @@ namespace KadGen.Common.Repository
     public class BaseEfRepository<TDomain, TPKey, TEntity, TDbContext>
         : BaseMappedRepository<TDomain, TPKey, TEntity>
             where TPKey : struct
-            where TDomain : class
-            where TEntity : class
-            where TDbContext : DbContext, new()
+            where TDomain : class, IDomain<TPKey>
+            where TEntity : class, new()
+            where TDbContext : DbContext
     {
+        private TDbContext _dbContext;
+
         private Func<TDbContext, DbSet<TEntity>> _getDbSet { get; }
 
         public BaseEfRepository(
+                TDbContext dbContext,
                 Func<TDbContext, DbSet<TEntity>> getDbSet,
                 Expression<Func<TEntity, TPKey>> getPKey,
                 Func<TEntity, TDomain> mapEntityToDomain,
-                Func<TDomain, TEntity> mapDomainToEntity)
+                Action<TDomain, TEntity> mapDomainToEntity)
             : base(getPKey, mapEntityToDomain, mapDomainToEntity)
         {
+            _dbContext = dbContext;
             _getDbSet = getDbSet;
         }
 
@@ -31,15 +35,13 @@ namespace KadGen.Common.Repository
         {
             try
             {
-                using (var dbContext = new TDbContext())
-                {
-                    var dbSet = _getDbSet(dbContext);
-                    var entity = dbSet.Where(GetPKeyWhereClause(id))
-                            .SingleOrDefault();
-                    var domain = MapEntityToDomain(entity);
-                    var result = DataResult<TDomain>.CreateSuccessResult(domain);
-                    return result;
-                }
+
+                var dbSet = _getDbSet(_dbContext);
+                var entity = dbSet.Where(GetPKeyWhereClause(id))
+                        .SingleOrDefault();
+                var domain = MapEntityToDomain(entity);
+                var result = DataResult<TDomain>.CreateSuccessResult(domain);
+                return result;
             }
             catch (Exception ex)
             {
@@ -48,12 +50,29 @@ namespace KadGen.Common.Repository
         }
 
         public override DataResult<IEnumerable<TDomain>> GetAll()
-                => WithWrappedDbSet(
-                    dbSet => dbSet
-                                .ToList()
-                                .Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
-                                .ToList().Select(x => x)
-                                .CreateSuccessResult());
+        {
+            try
+            {
+                var dbSet = _getDbSet(_dbContext).ToList();
+                return dbSet
+                            .ToList()
+                            .Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
+                            .ToList().Select(x => x)
+                            .CreateSuccessResult();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        //=> WithWrappedDbSet(
+        //    dbSet => dbSet
+        //                .ToList()
+        //                .Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
+        //                .ToList().Select(x => x)
+        //                .CreateSuccessResult());
 
         public async Task<DataResult<IEnumerable<TDomain>>> GetAllAsync()
                   => await WithWrappedDbSetAsync(
@@ -71,7 +90,8 @@ namespace KadGen.Common.Repository
             => WithWrappedDbSetAndContext(
                 (dbContext, dbSet) =>
                     {
-                        var entity = domain.Map(MapDomainToEntity);
+                        var entity = new TEntity();
+                        domain.Map(MapDomainToEntity, entity);
                         dbSet.Add(entity);
                         dbContext.SaveChanges();
                         return GetPKey(entity)
@@ -82,7 +102,9 @@ namespace KadGen.Common.Repository
             => WithWrappedDbSetAndContext(
                     (dbContext, dbSet) =>
                     {
-                        var entity = domain.Map(MapDomainToEntity);
+                        var entity = dbSet.Where(GetPKeyWhereClause(domain.Id))
+                                                .SingleOrDefault();
+                        domain.Map(MapDomainToEntity, entity);
                         dbSet.Attach(entity);
                         dbContext.Entry(entity).State = EntityState.Modified;
                         dbContext.SaveChanges();
@@ -93,7 +115,8 @@ namespace KadGen.Common.Repository
                 => WithWrappedDbContext(
                     dbContext =>
                     {
-                        var entity = domain.Map(MapDomainToEntity);
+                        var entity = new TEntity();
+                        domain.Map(MapDomainToEntity, entity);
                         var entry = dbContext.Entry(entity);
                         entry.State = EntityState.Deleted;
                         dbContext.SaveChanges();
@@ -129,9 +152,7 @@ namespace KadGen.Common.Repository
         private TResult WithWrappedDbContext<TResult>(Func<TDbContext, TResult> operation)
                 where TResult : Result
             => Handling.WithCommonHandling(()
-                => Disposable.Using(
-                    () => new TDbContext(),
-                    dc => operation(dc)));
+                => operation(_dbContext));
 
         private async Task<TResult> WithWrappedDbSetAsync<TResult>(
                     Func<DbSet<TEntity>, Task<TResult>> operation)
@@ -149,9 +170,7 @@ namespace KadGen.Common.Repository
             Func<TDbContext, Task<TResult>> operation)
                 where TResult : Result
             => await Handling.WithCommonHandlingAsync(async ()
-                => await Disposable.UsingAsync(
-                    () => new TDbContext(),
-                    dc => operation(dc)));
+                => await operation(_dbContext));
 
     }
 }

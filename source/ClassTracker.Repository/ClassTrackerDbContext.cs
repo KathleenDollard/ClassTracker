@@ -1,11 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace KadGen.ClassTracker.Repository
 {
+    public class ClassTrackerDbContextFactory : IDbContextFactory<ClassTrackerDbContext>
+    {
+        public ClassTrackerDbContext Create()
+        {
+            return new ClassTrackerDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\kathleen\\Source\\Repos\\ClassTracker\\Database\\ClassTracker.mdf;Integrated Security=True;Connect Timeout=30");
+            //return new ClassTrackerDbContext("Server=.\\..\\..\\Database\\mssqllocaldb;Database=ClassTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
+        }
+    }
+
     public class ClassTrackerDbContext : DbContext
     {
-        public ClassTrackerDbContext() : base("name=ClassTrackerDatabase")
+        //public ClassTrackerDbContext() : base("name=DefaultConnection")
+        //{ }
+
+        public ClassTrackerDbContext(string connString) : base(connString)
         { }
 
         public DbSet<EfOrganization> Organizations { get; set; }

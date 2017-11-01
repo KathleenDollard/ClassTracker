@@ -7,8 +7,8 @@ namespace KadGen.ClassTracker.Repository
     public class OrganizationRepository
             : BaseEfRepository<Organization, int, EfOrganization, ClassTrackerDbContext>
     {
-        public OrganizationRepository()
-            : base(
+        public OrganizationRepository(ClassTrackerDbContext dbContext)
+            : base(dbContext,
                   getDbSet: dc => dc.Organizations,
                   getPKey: o => o.Id,
                   mapEntityToDomain: Mapper.MapEntityToDomain,
@@ -30,12 +30,17 @@ namespace KadGen.ClassTracker.Repository
                                 => CourseRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList());
             }
 
-            public static EfOrganization MapDomainToEntity(Organization domain)
+            //public static EfOrganization MapDomainToNewEntity(Organization domain)
+            //{
+            //    var entity = new EfOrganization();
+            //    MapDomainToEntity(domain, entity);
+            //    return entity;
+            //}
+
+            public static void MapDomainToEntity(Organization domain, EfOrganization entity)
             {
-                var entity = new EfOrganization();
                 entity.Id = domain.Id;
                 entity.Name = domain.Name;
-                return entity;
             }
         }
     }
