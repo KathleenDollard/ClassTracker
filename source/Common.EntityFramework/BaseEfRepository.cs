@@ -37,8 +37,9 @@ namespace KadGen.Common.Repository
             {
 
                 var dbSet = _getDbSet(_dbContext);
-                var entity = dbSet.Where(GetPKeyWhereClause(id))
-                        .SingleOrDefault();
+                var entity = dbSet
+                                .Where(GetPKeyWhereClause(id))
+                                .SingleOrDefault();
                 var domain = MapEntityToDomain(entity);
                 var result = DataResult<TDomain>.CreateSuccessResult(domain);
                 return result;
@@ -50,35 +51,17 @@ namespace KadGen.Common.Repository
         }
 
         public override DataResult<IEnumerable<TDomain>> GetAll()
-        {
-            try
-            {
-                var dbSet = _getDbSet(_dbContext).ToList();
-                return dbSet
+            => WithWrappedDbSet(
+                dbSet => dbSet
                             .ToList()
                             .Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
                             .ToList().Select(x => x)
-                            .CreateSuccessResult();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-
-        //=> WithWrappedDbSet(
-        //    dbSet => dbSet
-        //                .ToList()
-        //                .Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
-        //                .ToList().Select(x => x)
-        //                .CreateSuccessResult());
+                            .CreateSuccessResult());
 
         public async Task<DataResult<IEnumerable<TDomain>>> GetAllAsync()
                   => await WithWrappedDbSetAsync(
-                      async dbSet =>
+                     async dbSet =>
                       {
-                          await Task.Delay(1000);
                           var list = await dbSet.ToListAsync();
                           Console.WriteLine("Done");
                           return list.Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
