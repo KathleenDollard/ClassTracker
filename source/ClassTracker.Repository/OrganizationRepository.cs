@@ -30,13 +30,6 @@ namespace KadGen.ClassTracker.Repository
                                 => CourseRepository.Mapper.MapEntityToDomainForOrganization(x, org)).ToList());
             }
 
-            //public static EfOrganization MapDomainToNewEntity(Organization domain)
-            //{
-            //    var entity = new EfOrganization();
-            //    MapDomainToEntity(domain, entity);
-            //    return entity;
-            //}
-
             public static void MapDomainToEntity(Organization domain, EfOrganization entity)
             {
                 entity.Id = domain.Id;
