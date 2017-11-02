@@ -14,8 +14,18 @@ namespace ClassTracker.Repository.Specs
         public void Stuff()
         {
             var values = Enumerable.Range(1, 10);
+            var newValues = values.Compute(x => x * x);
         }
     }
+
+    public static class Extensions
+    {
+        public static IEnumerable<int> Compute(
+            this IEnumerable<int> list,
+            Func<int, int> operation)
+        {
+            return list.Select(x => operation(x));
+        }
 
   
 
