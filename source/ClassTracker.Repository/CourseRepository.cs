@@ -4,7 +4,7 @@ using KadGen.Common.Repository;
 namespace KadGen.ClassTracker.Repository
 {
     public class CourseRepository
-             : BaseEfRepository<Course, int, EfCourse, ClassTrackerDbContext>
+             : BaseEfRepository<ClassTrackerDbContext,Course, int, EfCourse >
     {
         public CourseRepository(ClassTrackerDbContext dbContext)
             : base(

@@ -5,7 +5,7 @@ using System.Linq;
 namespace KadGen.ClassTracker.Repository
 {
     public class OrganizationRepository
-            : BaseEfRepository<Organization, int, EfOrganization, ClassTrackerDbContext>
+            : BaseEfRepository<ClassTrackerDbContext,Organization, int, EfOrganization>
     {
         public OrganizationRepository(ClassTrackerDbContext dbContext)
             : base(dbContext,

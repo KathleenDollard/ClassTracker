@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KadGen.Common.Repository
 {
-    public class BaseEfRepository<TDomain, TPKey, TEntity, TDbContext>
+    public class BaseEfRepository<TDbContext,TDomain, TPKey, TEntity>
         : BaseMappedRepository<TDomain, TPKey, TEntity>
             where TPKey : struct
             where TDomain : class, IDomain<TPKey>
