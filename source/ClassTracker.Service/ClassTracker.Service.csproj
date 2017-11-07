@@ -48,8 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourseService.cs" />
+    <Compile Include="InstructorService.cs" />
     <Compile Include="OrganizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SectionService.cs" />
+    <Compile Include="TermService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClassTracker.Domain\ClassTracker.Domain.csproj">

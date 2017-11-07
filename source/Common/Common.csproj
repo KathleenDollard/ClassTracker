@@ -57,6 +57,7 @@
     <Compile Include="Extensions\ExpressionExptensions.cs" />
     <Compile Include="Extensions\FunctionExtensions.cs" />
     <Compile Include="Extensions\Handling.cs" />
+    <Compile Include="IBaseService.cs" />
     <Compile Include="IDomain.cs" />
     <Compile Include="ReflectionHelpers.cs" />
     <Compile Include="Repository\InMemoryRepository.cs" />

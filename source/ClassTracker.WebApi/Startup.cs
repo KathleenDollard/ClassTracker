@@ -28,8 +28,8 @@ namespace KadGen.ClassTracker.WebApi
             // Add framework services.
             services.AddMvc();
             var connString = Configuration["Data:DefaultConnection:ClassTrackerConnectionString"];
-            var dbContext = new ClassTrackerDbContext(connString);
-            services.AddScoped(serviceProvider => new OrganizationService(dbContext));
+            services.AddScoped(_ => new ClassTrackerDbContext(connString));
+            services.AddScoped<OrganizationService, OrganizationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

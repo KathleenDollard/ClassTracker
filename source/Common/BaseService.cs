@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KadGen.Common
 {
-    public abstract class BaseService<TDomain, TPKey>
+    public abstract class BaseService<TDomain, TPKey> : IBaseService<TDomain, TPKey>
                where TPKey : struct
                where TDomain : class
     {

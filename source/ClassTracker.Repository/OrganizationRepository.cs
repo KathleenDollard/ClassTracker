@@ -9,7 +9,6 @@ namespace KadGen.ClassTracker.Repository
     {
         public OrganizationRepository(ClassTrackerDbContext dbContext)
             : base(dbContext,
-                  getDbSet: dc => dc.Organizations,
                   getPKey: o => o.Id,
                   mapEntityToDomain: Mapper.MapEntityToDomain,
                   mapDomainToEntity: Mapper.MapDomainToEntity)

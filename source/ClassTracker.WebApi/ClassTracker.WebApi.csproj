@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Hidden\**" />
+    <Content Remove="Controllers\Hidden\**" />
+    <EmbeddedResource Remove="Controllers\Hidden\**" />
+    <None Remove="Controllers\Hidden\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

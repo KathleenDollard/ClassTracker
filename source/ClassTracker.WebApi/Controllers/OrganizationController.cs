@@ -16,7 +16,7 @@ namespace KadGen.ClassTracker.WebApi.Controllers
         private ILogger<OrganizationController> _logger;
 
         public OrganizationController(OrganizationService service,
-            ILogger<OrganizationController> logger )
+            ILogger<OrganizationController> logger)
         {
             _service = service;
             _logger = logger;
@@ -25,7 +25,6 @@ namespace KadGen.ClassTracker.WebApi.Controllers
         [HttpGet]
         public DataResult<IEnumerable<OrganizationViewModel>> Get()
         {
-            _logger.LogInformation(LoggingEvents.GetAll, "Getting organizations");
             try
             {
                 var result = _service.GetAll();
@@ -34,34 +33,16 @@ namespace KadGen.ClassTracker.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(LoggingEvents.UncaughtError, "Eeek!!! OMG! The exception wasn't caught");
                 return Result.CreateErrorResult<DataResult<IEnumerable<OrganizationViewModel>>>(new Error(ErrorCode.ExceptionThrown, ex, null));
             }
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public DataResult<OrganizationViewModel> Get(int id)
         {
-            _logger.LogInformation(LoggingEvents.GetItem, "Getting organization {Id}", id);
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var result = _service.Get(id);
+            return result.CreateWithMap(
+                item => new OrganizationViewModel(item));
         }
     }
 }

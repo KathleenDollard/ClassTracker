@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassTrackerDbContext.cs" />
+    <Compile Include="ClassTrackerRepositoryFactory.cs" />
     <Compile Include="EfModels\EfCourse.cs" />
     <Compile Include="EfModels\EfInstructor.cs" />
     <Compile Include="EfModels\EfOrganization.cs" />
@@ -69,7 +70,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OrganizationRepository2.cs" />
-    <Compile Include="RepositoryFactory.cs" />
+    <Compile Include="SectionRepository.cs" />
     <Compile Include="TermRepository.cs" />
     <Compile Include="OrganizationRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,6 @@ namespace KadGen.ClassTracker.Repository
         public CourseRepository(ClassTrackerDbContext dbContext)
             : base(
                   dbContext,
-                  getDbSet: dc => dc.Courses,
                   getPKey: e => e.Id,
                   mapEntityToDomain: Mapper.MapEntityToDomain,
                   mapDomainToEntity: Mapper.MapDomainToEntity)

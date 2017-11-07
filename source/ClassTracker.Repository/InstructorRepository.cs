@@ -9,7 +9,6 @@ namespace KadGen.ClassTracker.Repository
         public InstructorRepository(ClassTrackerDbContext dbContext)
             : base(
                   dbContext,
-                  getDbSet: dc => dc.Instructors,
                   getPKey: e => e.Id,
                   mapEntityToDomain: Mapper.MapEntityToDomain,
                   mapDomainToEntity: Mapper.MapDomainToEntity)

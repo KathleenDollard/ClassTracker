@@ -9,17 +9,15 @@ namespace KadGen.ClassTracker.Repository
         public ClassTrackerDbContext Create()
         {
             return new ClassTrackerDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\kathleen\\Source\\Repos\\ClassTracker\\Database\\ClassTracker.mdf;Integrated Security=True;Connect Timeout=30");
-            //return new ClassTrackerDbContext("Server=.\\..\\..\\Database\\mssqllocaldb;Database=ClassTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
 
     public class ClassTrackerDbContext : DbContext
     {
-        //public ClassTrackerDbContext() : base("name=DefaultConnection")
-        //{ }
-
-        public ClassTrackerDbContext(string connString) : base(connString)
-        { }
+         public ClassTrackerDbContext(string connString) : base(connString)
+        {
+           // this.Configuration.LazyLoadingEnabled = false;
+        }
 
         public DbSet<EfOrganization> Organizations { get; set; }
         public DbSet<EfSection> Sections { get; set; }
@@ -33,7 +31,7 @@ namespace KadGen.ClassTracker.Repository
 
             builder.Entity<EfOrganization>()
                 .HasKey(i => i.Id)
-                .ToTable ("Organization");
+                .ToTable("Organization");
             builder.Entity<EfOrganization>()
               .Property(i => i.Id)
               .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity)

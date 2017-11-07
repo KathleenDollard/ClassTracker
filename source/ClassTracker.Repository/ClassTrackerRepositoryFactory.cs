@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace KadGen.ClassTracker.Repository
 {
-    public class RepositoryFactory : BaseFactory<BaseRepository>
+    public class ClassTrackerRepositoryFactory : BaseFactory<BaseRepository>
     {
-        public RepositoryFactory(ClassTrackerDbContext dbContext)
+        public ClassTrackerRepositoryFactory(ClassTrackerDbContext dbContext)
             : base(
             new Dictionary<Type, BaseRepository>
             {

@@ -4,9 +4,9 @@ using KadGen.Common;
 
 namespace KadGen.ClassTracker.Service
 {
-    public class OrganizationService : BaseService<Organization, int>
+    public class TermService : BaseService<Term, int>
     {
-        public OrganizationService(ClassTrackerDbContext dbContext)
+        public TermService(ClassTrackerDbContext dbContext)
             :base(new ClassTrackerRepositoryFactory(dbContext))
         {}
     }
