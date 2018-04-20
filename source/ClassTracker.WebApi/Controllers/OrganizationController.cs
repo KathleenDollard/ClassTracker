@@ -21,8 +21,13 @@ namespace KadGen.ClassTracker.WebApi.Controllers
         public DataResult<IEnumerable<OrganizationViewModel>> Get()
         {
             var result = _service.GetAll();
-                return result.CreateWithMap(list=>list
-                    .Select(x=>new OrganizationViewModel(x)));
+            if (result.IsSuccessful)
+            {
+                return result.CreateWithMap(list => list
+                    .Select(x => new OrganizationViewModel(x)));
+            }
+            return Result.CreateErrorResult<DataResult<IEnumerable<OrganizationViewModel>>>
+                (result.Errors.ToArray());
         }
 
         [HttpGet("{id}")]

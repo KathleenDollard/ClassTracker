@@ -8,8 +8,7 @@ namespace KadGen.ClassTracker.Repository
     {
         public ClassTrackerDbContext Create()
         {
-            return new ClassTrackerDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\kathleen\\Source\\Repos\\ClassTracker\\Database\\ClassTracker.mdf;Integrated Security=True;Connect Timeout=30");
-            //return new ClassTrackerDbContext("Server=.\\..\\..\\Database\\mssqllocaldb;Database=ClassTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
+            return new ClassTrackerDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\kathl\\Documents\\Presentations\\201804 CodeStock\\Functional\\Code\\ClassTracker\\source\\ClassTracker.WebApi\\ClassTracker.mdf;Integrated Security=True;Connect Timeout=30");
         }
     }
 

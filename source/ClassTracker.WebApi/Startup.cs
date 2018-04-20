@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using KadGen.ClassTracker.Service;
 using KadGen.ClassTracker.Repository;
+using System.IO;
 
 namespace KadGen.ClassTracker.WebApi
 {
@@ -28,6 +29,9 @@ namespace KadGen.ClassTracker.WebApi
             // Add framework services.
             services.AddMvc();
             var connString = Configuration["Data:DefaultConnection:ClassTrackerConnectionString"];
+            // This is a hack for development
+            var currentDirectory = Directory.GetCurrentDirectory();
+            connString = connString.Replace(".\\", currentDirectory + "\\");
             var dbContext = new ClassTrackerDbContext(connString);
             //services.AddScoped<ClassTrackerDbContext>
             //    (serviceProvider => new ClassTrackerDbContext
