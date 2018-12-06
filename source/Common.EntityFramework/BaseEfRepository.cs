@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace KadGen.Common.Repository
             where TEntity : class, new()
             where TDbContext : DbContext
     {
-        private TDbContext _dbContext;
+        private readonly TDbContext _dbContext;
 
         private Func<TDbContext, DbSet<TEntity>> _getDbSet { get; }
 
@@ -31,16 +32,18 @@ namespace KadGen.Common.Repository
             _getDbSet = getDbSet;
         }
 
+
+
         public override DataResult<TDomain> Get(TPKey id)
         {
             try
             {
 
-                var dbSet = _getDbSet(_dbContext);
-                var entity = dbSet
+                DbSet<TEntity> dbSet = _getDbSet(_dbContext);
+                TEntity entity = dbSet
                                 .Where(GetPKeyWhereClause(id))
                                 .SingleOrDefault();
-                var domain = MapEntityToDomain(entity);
+                TDomain domain = MapEntityToDomain(entity);
                 var result = DataResult<TDomain>.CreateSuccessResult(domain);
                 return result;
             }
@@ -62,7 +65,7 @@ namespace KadGen.Common.Repository
                   => await WithWrappedDbSetAsync(
                      async dbSet =>
                       {
-                          var list = await dbSet.ToListAsync();
+                          List<TEntity> list = await dbSet.ToListAsync();
                           Console.WriteLine("Done");
                           return list.Map(x => MapEntityToDomain(x)) // Prefer map because can't be run against DB
                               .ToList().Select(x => x)
@@ -85,7 +88,7 @@ namespace KadGen.Common.Repository
             => WithWrappedDbSetAndContext(
                     (dbContext, dbSet) =>
                     {
-                        var entity = dbSet.Where(GetPKeyWhereClause(domain.Id))
+                        TEntity entity = dbSet.Where(GetPKeyWhereClause(domain.Id))
                                                 .SingleOrDefault();
                         domain.Map(MapDomainToEntity, entity);
                         dbSet.Attach(entity);
@@ -100,7 +103,7 @@ namespace KadGen.Common.Repository
                     {
                         var entity = new TEntity();
                         domain.Map(MapDomainToEntity, entity);
-                        var entry = dbContext.Entry(entity);
+                        DbEntityEntry<TEntity> entry = dbContext.Entry(entity);
                         entry.State = EntityState.Deleted;
                         dbContext.SaveChanges();
                         return Result.CreateSuccessResult<Result>();

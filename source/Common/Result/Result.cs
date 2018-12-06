@@ -6,7 +6,8 @@ namespace KadGen.Common
 {
     public class Result
     {
-        internal Result(IEnumerable<Error> errors,
+        internal Result(
+                IEnumerable<Error> errors,
                 IEnumerable<ValidationIssue> validationIssues)
         {
             Errors = errors ?? new List<Error>();

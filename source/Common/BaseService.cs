@@ -13,10 +13,8 @@ namespace KadGen.Common
     {
         private BaseRepository<TDomain, TPKey> _repository { get; }
 
-        protected BaseService(BaseFactory<BaseRepository> factory)
-        {
-            _repository = (BaseRepository<TDomain, TPKey>)factory[typeof(TDomain)];
-        }
+        protected BaseService(BaseFactory<BaseRepository> factory) 
+            => _repository = (BaseRepository<TDomain, TPKey>)factory[typeof(TDomain)];
 
         public virtual DataResult<TDomain> Get(TPKey id)
             => WithWrapper(() => _repository.Get(id));

@@ -1,35 +1,29 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using KadGen.ClassTracker.Service;
+﻿using KadGen.ClassTracker.Service;
 using KadGen.ClassTracker.WebApi.ViewModels;
-using System.Linq;
 using KadGen.Common;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KadGen.ClassTracker.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class OrganizationController : Controller
+    public class OrganizationController : Controller    
     {
         private OrganizationService _service;
 
         public OrganizationController(OrganizationService service)
-        {
-            _service = service;
-        }
+            => _service = service;
 
         [HttpGet]
         public DataResult<IEnumerable<OrganizationViewModel>> Get()
-        {
-            var result = _service.GetAll();
-                return result.CreateWithMap(list=>list
-                    .Select(x=>new OrganizationViewModel(x)));
-        }
+            => _service
+                .GetAll()
+                .CreateWithMap(
+                    list => list.Select(x => new OrganizationViewModel(x)));
 
         [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        public string Get(int id) => "value";
 
         // POST api/values
         [HttpPost]
