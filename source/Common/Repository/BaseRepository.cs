@@ -19,11 +19,8 @@ namespace KadGen.Common.Repository
         public abstract Result Update(TDomain domain);
         public abstract Result Delete(TDomain domain);
 
-        public BaseRepository(
-            string pKeyName)
-        {
-            PKeyName = pKeyName;
-        }
+        public BaseRepository(string pKeyName) 
+            => PKeyName = pKeyName;
     }
 
 }

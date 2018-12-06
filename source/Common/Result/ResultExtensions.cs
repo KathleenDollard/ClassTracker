@@ -2,9 +2,7 @@
 {
     public static class ResultExtensions
     {
-        public static DataResult<TData> CreateSuccessResult<TData>(this TData data)
-        {
-            return new DataResult<TData>(data, null, null);
-        }
+        public static DataResult<TData> CreateSuccessResult<TData>(this TData data) 
+            => new DataResult<TData>(data, null, null);
     }
 }

@@ -63,6 +63,10 @@
     <Compile Include="EfModels\EfTerm.cs" />
     <Compile Include="CourseRepository.cs" />
     <Compile Include="InstructorRepository.cs" />
+    <Compile Include="Mappers\CourseMapper.cs" />
+    <Compile Include="Mappers\InstructorMapper.cs" />
+    <Compile Include="Mappers\OrganizationMapper.cs" />
+    <Compile Include="Mappers\TermMapper.cs" />
     <Compile Include="Migrations\201710312348236_Vegas.cs" />
     <Compile Include="Migrations\201710312348236_Vegas.Designer.cs">
       <DependentUpon>201710312348236_Vegas.cs</DependentUpon>

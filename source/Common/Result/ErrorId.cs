@@ -1,9 +1,9 @@
 ﻿namespace KadGen.Common
 {
-    public enum ErrorCode
+    public class ErrorCode
     {
-        Unknown = 0,
-        ExceptionThrown = 1,
-        FailedWithoutMessage = 2
+        public const int Unknown = 0;
+        public const int ExceptionThrown = 1;
+        public const int FailedWithoutMessage = 2;
     }
 }

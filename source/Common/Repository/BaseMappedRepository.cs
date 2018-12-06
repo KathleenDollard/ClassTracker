@@ -31,9 +31,7 @@ namespace KadGen.Common.Repository
             GetPKey = getPKeyExpression.Compile();
         }
 
-        protected Expression<Func<TEntity, bool>> GetPKeyWhereClause(TPKey id)
-        {
-            return _getPKeyExpr.EqualsWhereFromMemberLambdaExpression(id);
-        }
+        protected Expression<Func<TEntity, bool>> GetPKeyWhereClause(TPKey id) 
+            => _getPKeyExpr.EqualsWhereFromMemberLambdaExpression(id);
     }
 }

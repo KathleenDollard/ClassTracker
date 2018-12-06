@@ -1,9 +1,9 @@
 ﻿namespace KadGen.Common
 {
-    public enum ValidationIssueId
+    public class ValidationIssueId
     {
-        Unknown = 0,
-        RequiredValueMissing,
-        StringTooShort
+        public const int Unknown = 0;
+        public const int RequiredValueMissing = 1;
+        public const int StringTooShort = 2;
     }
 }
